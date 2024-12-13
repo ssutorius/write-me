@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Shifting with Idle Effects</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Garamond, serif;
+      background-color: #f0f0f0;
+      transition: background-color 1s ease;
+    }
+
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: #ccc;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 5px;
+      width: 0%;
+      background-color: #007bff; /* Blue progress bar */
+      transition: width 0.1s;
+    }
+
+    .title-container {
+      text-align: center;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+      background-color: #f0f0f0;
+      z-index: 1000;
+    }
+
+    .main-title {
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 0;
+      color: black;
+    }
+
+    .subtitle {
+      font-size: 20pt;
+      font-style: italic;
+      margin: 0;
+      color: black;
+      cursor: pointer;
+    }
+
+    .hidden-message {
+      display: none;
+      font-size: 12pt;
+      color: red;
+      margin-top: 5px;
+    }
+
+    .shifting-container {
+      width: 100%;
+      background-color: #f0f0f0;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .shifting-image {
+      width: 300px;
+      height: auto;
+      margin: 20px; /* Add spacing around images */
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .shifting-image:hover {
+      transform: scale(1.1); /* Expands image on hover */
+    }
+
+    .image-left {
+      float: left;
+      margin-right: 20px;
+    }
+
+    .image-right {
+      float: right;
+      margin-left: 20px;
+    }
+
+    .header {
+      font-size: 16pt;
+      color: purple;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.5s ease, color 0.5s ease, font-size 0.5s ease;
+    }
+
+    .shifting-text {
+      font-size: 13pt;
+      color: #333;
+      text-align: left;
+      line-height: 1.5;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: transform 0.5s ease, color 0.5s ease, font-size 0.5s ease;
+      clear: both;
+    }
+
+    /* Add styling so all p elements can also be clicked and moved */
+    p {
+      cursor: pointer;
+      transition: transform 0.5s ease, color 0.5s ease, font-size 0.5s ease;
+    }
+
+    blockquote {
+      font-size: 12pt;
+      color: #666;
+      border-left: 4px solid #999;
+      padding-left: 10px;
+      margin: 10px 0;
+      transition: transform 0.5s ease;
+      cursor: pointer;
+    }
+
+    .works-cited,
+    .acknowledgements {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #f7f7f7;
+      border-top: 2px solid #ccc;
+    }
+
+    .works-cited h2,
+    .acknowledgements h2 {
+      font-size: 18pt;
+      color: purple;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .works-cited ul,
+    .acknowledgements ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .works-cited ul li,
+    .acknowledgements ul li {
+      margin: 5px 0;
+      font-size: 13pt;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-container">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="title-container">
+    <h1 class="main-title">Write Me II: How to Create Another (Digital) Creature</h1>
+    <h2 class="subtitle">Keep interacting to stay in control</h2>
+    <p class="hidden-message">Every three minutes it will restart.</p>
+  </div>
+
+  <div class="shifting-container">
+    <div class="section">
+      <h2 class="header">Introduction</h2>
+      <img class="shifting-image image-left" src="1.jpg" alt="Introduction Image Above">
+      <blockquote>“[Y]et one of the first results of those sympathies for which the daemon thirsted would be children, and a race of devils would be propagated upon the earth who might make the very existence of the species of man a condition precarious and full of terror. Had I right, for my own benefit, to inflict this curse upon everlasting generations? I had before been moved by the sophisms of the being I had created; I had been struck senseless by his fiendish threats: but now, for the first time, the wickedness of my promise burst upon me; I shuddered to think that future ages might curse me as their pest, whose selfishness had not hesitated to buy its own peace at the price, perhaps, of the existence of the whole human race.”</p>
+      <p>—Dr. Victor Frankenstein (Shelley, 128).</p></blockquote>
+
+      <p class="shifting-text"><p>	Frankenstein’s creature has one request of his creator throughout this life: <em>make for me a companion that I can travel with, and I will leave you alone. </em>However, after watching the creature watching him create the companion for him, he ponders on the paragraph above, and ultimately destroys his would-be second creation. Implicitly, Frankenstein tells us that not only would he have to imbue his second creation with reproductive capacity, but that he has already given this ability to his first — because of course, it takes two people to reproduce. So, why then, could Frankenstein’s first creature not have sex with a human woman who already lives and end up impregnating her with some sort of half-breed of human-Frankensteinian creation?</p>
+<p>	While Shelley does not address this, more important to our analysis is the fact that reproduction is a central part of the Frankensteinian theory. The Creature, a monster assembled out of many different parts — both animal and human — is ignited to life by Dr. Frankenstein with an electricity he refuses to share in its entirety with Captain Robert Walton, of which the story is framed through his letters to his sister (61). However, before making his momentous discovery, Dr. Frankenstein states, “Whence, I often asked myself, did the principle of life proceed? […] To examine the causes of life, we must first have recourse to death” (60). To create, and to reanimate, is a state perpetually situated then in between life and death, as Dr. Frankenstein illuminates here. And so then, taking the Creature, something only alive through electricity and some other special ingredient to life, learns on its own about the state of its existence through already written material, and years to reproduce, begins to help us understand a very different state of being — the state of being <em>online</em>.</p>
+<p>	To be on the internet is to be dead and alive, or in other words, to be the Creature as Dr. Frankenstein animated him. You are disembodied yet still breathing and living, but forced to project yourself into an ephemeral and ethereal space that is all at once familiar yet so unknown. How do you manage your task? In using your senses to pull yourself forward to some sort of greater understanding. As the Creature describes, the beginning of his being was not just the senses, but his senses as recognized among the world of literature:</p>
+      <blockquote>I can hardly describe to you the effect of these books. They produced in me an infinity of new images and feelings that sometimes raised me to ecstasy, but more frequently sunk me into the lowest dejection. In the <em>Sorrows of Werter</em>, besides the interest of its simple and affecting story, so many opinions are canvassed, and so many lights thrown upon what had hitherto been to me obscure subjects, that I found in it a never-ending source of speculation and astonishment. […] As I read, however, I applied much personally to my own feelings and condition. I found myself similar, yet at the same time strangely unlike to the beings concerning whom I read, and to whose conversation I was a listener.
+      <p>(155)</p></blockquote>
+<p>The Creature, thrown from and into oblivion, with no choice to be rejected from the moment of his creation, subverts all this by finding a new way of inventing himself. As Legacy Russell, author of <em>Glitch Feminism</em> might put it, the glitch — being the Creature himself — found further ways to glitch the system he was in: “A glitch is an error. Glitches are difficult to name and nearly impossible to identify until that instant when they reveal themselves: an accidental triggering some form of chaos” (73). The only way to which the Creature can make sense of the world around him is through embodiment, as “the body is a text: every time we define ourselves, we choose definitions—names” and for the Creature, who identifies with characters such as Adam and Lucifer, the DeLacy family, and Frankenstein himself, and this eventuality leads to his rejection “that reduce[s] the ways our bodies can be read” (73). Yet despite all this, the glitch and power of glitching persists, as does <em>Frankenstein </em>in our modern popular culture. The Creature is one of the most complex inventions in the literary canon, and so the analogous to social media is particularly relevant given the fact that <em>Frankenstein’s</em> legacy was cemented through early cinematic endeavors. James Whale’s 1931 film adaptation of <em>Frankenstein</em> is what has given us the iconic visual imagery of the Creature — green, bolts in the neck, and bulging forehead — yet this same version removes nearly every aspect of the Creature’s emotion and intellectual journey described here. As “Frankenstein’s monster” the Creature, in cinema, cannot glitch. The Creature is reduced to monster, to horrific icon, to symbol of brute power and scientific madness unleashed. There is no glitch, because this form has been reduced down to only monster, and monsters do not glitch — they are destroyed.</p>
+<p>	While James Whale’s film may not be a true adaptation of the source material, this matters little in considering the life — and glitches — it enabled by cementing <em>Frankenstein </em>as part of popular media forever. In 2023, Searchlight Pictures released <em>Poor Things</em>, directed by Yorgos Lanthimos and written by Tony McNamara, based on the 1992 novel by Alasdair Gray (McNamara). Emma Stone plays Bella Baxter, a woman whose fetus’s brain has been implanted in her head after she, in her previous life as Victoria Blessington, committed suicide while pregnant to escape an abusive marriage in Victorian England (McNamara). A take on the Frankenstein story, Bella’s story differs significantly as having only her mind operated on with new parts, and of course, being in a woman’s body, yet Lanthimos’s work serves as a true site of exploring what the Creature can offer to a 21<sup>st</sup> century perspective on the digital. Like the Creature, Bella is only initially able to deal with her base sensory needs — hunger, waste, light, speaking, and feeling which eventually leads to sexual pleasure — but soon enough begins on the same journey Shelley’s original Creature endeavored on: literary. After meeting an elderly woman, Martha von Kurtzroc, and her African American companion, Harry Astley, on a cruise, Bella begins reading Ralph Waldo Emerson, Johann Wolfgang von Goethe, and Karl Marx, or as she states, “It is the goal of all to improve, advance, progress and grow. I know this in me and am sure I am indicative of all,” eventually going to socialist meetings and pursuing to become a medical doctor (McNamara 50). Bella’s female form, though presented for other women as a barrier to their social and economic lives, is one Bella cannot and refuses to conform to, even going so far as to explore prostitution without shame but intellectual and sensual insight. Bella’s embodiment is what ends up empowering her to a higher realm of being further from even the conventional humans around her. Victoria Blessington is not dead or alive, and neither is Bella Baxter. Her presentation in cinema, as it relates to our project in understand digital media, expands the way we can is laid out by Carlos Natalio in “Cinema, biopolitics and ‘cinematic operative model:’”</p>
+      <p><blockquote>while it is clear that cinema is not attached to a certain form or materiality, we still acknowledge the immaterial survival of a “cinematic ghost” in digital media. This presence of the cinematic in the post-cinematic is fuzzy. Cinema has lost its material, economic and cultural importance but remains an «ubiquitous omnipresence», a «specific form of affective address, temporal structure and narrative organisation [that] has become the implicit norm of moving image culture.»</p>
+      <p>(116)</p></blockquote>
+<p>Like the internet, current mechanics in motion picture capture as having moved to the digital, and the very structural changes to media consumption that have arisen because of the internet, mean cinema is both alive and dead as it appears before us. In fact, all of our media exists in this site of “un-experience” — where the dream becomes real and appears before our eyes without ever being materially present. Bella continues this fully, and her operation itself — the implantation of a fetal brain in an adult body — can describe the current technological and media conditions. Bella, standing at all intersections the Creature can in the 21<sup>st</sup> century, becomes indicative of Russell’s main thesis, and as a new state of what the Creature can mean for our digital exploration:</p>
+      <blockquote>What glitch feminism proposes here then is this: perhaps we want the break, we want to fail. We want wild, amorous, monstrous bodies. Through our presence as a glitch, we want to stand before, within, and outside of brokenness. The break an error, the error a passageway. Once we have infected, we want to travel outward in every direction. We want to touch everything, caress <em>every-fucking-body</em>, twist the machine. Viral, we want to multiply. We want to cramp culture, make society sweat.
+<br>(113)</blockquote>
+<p>	In so many words, has the race of devils as foresaw by Dr. Frankenstein proceeds before us now, embodied digitally in our social media spaces, as we reproduce ourselves, each other, and the world at large, only every growing smaller in our visions and appetites? Or, is perhaps, our embodiment our eventual salvation, only a part of a momentary condemnation such as in the case of the Creature, whose illumination comes from within? Can we, unlike Frankenstein and the Creature, find Paradise once more virtually — and therefore, in the real world?</p>
+<p>	In preparing to understand such concepts, I designed a social experiment, subverting the genres of social media and poetry, of humor and seriousness, and letting loose my creation on my class to see if the dynamics present in our online world continue in the real one. In taking you through the different forms of embodiment, I hope to analyze the aspects of my experiment that exalt the physical conditions and suppress it, and how we might all be more like Bella Baxter as we approach our digital selves. This experiment, even, is Bella Baxter-inspired in its nature: it is a continuation of a previous project, “Write Me: The Third Interface of a Writing Instagram,” in which I disembodied myself online in order to let others have only the digital. In reversing that, I found a way to hyper-embody the digital world. In going through this adventure, I hope to give you new ways to find your own embodiment as well, and in that way, you have been presented with digital tools to do so, as well as my own categorizations of the below sections to move through.</p>
+      <img class="shifting-image image-right" src="2.jpg" alt="Introduction Image Below">
+    </div>
+
+    <div class="section">
+      <h2 class="header">time/space</h2>
+      <img class="shifting-image image-left" src="3.jpg" alt="Section 1 Image Above">
+      <p class="shifting-text"><blockquote>“his voice saying softly, perhaps soundlessly, ‘I could not prevent it, I could not prevent it.…’ And they were dead, simply dead. […] I wanted to be where there was nothing familiar to me. And nothing mattered. And that’s the end of it. There’s nothing else.”/ “But not her. I could not prevent it. […] And that's the end of it. There's nothing else.”</p>
+<p>—Louis de Pointe du Lac, <em>Interview with the Vampire</em>, pg. 301, 336, Anne Rice (1976) / Louis de Pointe du Lac, <em>Interview with the Vampire</em> Season 2, Episode 7 “I Could Not Prevent It,” Episode 8 “And That's the End of It. There's Nothing Else” (2024)</blockquote>
+<p> </p>
+<p>	The first gauge of the world we ever receive is time and space. For it is in the womb that we are first confined, but continue to push against that boundary as time goes on and we manifest ourselves into existence. Floating in amniotic fluid, the first question we ever ask is not to our parents, but to time and space, lurching on it, <em>“what could we possibly be?”</em> Our inquiry is both chronological and kaironic, for fate destines that (for most of us) we will be born, of course, on a specific day, year, and time, and from there continue until our deaths. However, the possibility, or opportunity, <em>kairos</em>, continues into the question even before it is raised — without kairos, two people would not have come together on some random time and place and created another human being, whether intentionally or not. While almost all of life is experienced chronologically, it is the kaironic intervention that most counts when it comes to how we use possibility. Possibility can be identified chronologically, but only accessed to its full potentiality kaironically. As John Briggs and F. David Peat elaborate on in <em>Seven Life Lessons of Chaos,</em></p>
+<blockquote>Listen to someone humming the first few notes of a familiar tune and the entire music shape seems to be born in our heads. It is something all of a piece. In one moment we have accessed a fullness of time inherent in those first few notes. […] When we are willing to enter into a fractal dimension, our experience expands into time. We explore time’s nuances and act according to our own internal rhythms.
+<br>(127)</blockquote>
+<p>This initial state of a fractal dimension is one we are able to come back to continuously as human beings as it’s the state we are conceived and born in. While chronos and kairos represent the ancient Greek words for time, “cosmos” and “chora” deal with the spatial concepts of our being, “cosmos” being the ordered universe, and chora being the actual experiential space to which humans can navigate (Sallis). Kairos and chora depend on each other intersect in the same way that cosmos and chronos do: the two match up with one another as different sections of order and opportunity. Kairos is literally how we navigate chora, and thus, it presents that concepts on space — that is, as boundless and limitless, or architecturally structured — that map onto our physical, embodied world, and thus have digital mirrors.</p>
+<p>	Time and space as concepts primarily impact memory and movement and thus, are the first hurdle in architecting a way to recreate them from the digital back into the real world. Movement is separated into a different section of this essay as part of the types of interventions students were allowed to make on their own that I had not configured into the classroom environment, but movement and chora cannot be divorced from another. As Dustin Edwards writes, “Put otherwise, <em>choric </em>invention does not divorce a rhetor from her material environment, or the places and spaces she’s traversed. Rather, choric invention is attuned to <em>moving through</em> digital-material environments—spaces in motion—where rhetorical invention takes place” (Edwards). In the experiment, the two parts of this I consciously mapped out were about using the already existing structure of the classroom, both within the class schedule as to when I would do the experiment and the rules we all had been habituated to as part of going to school previously, as well as mechanical flow to which the presentation would progress. Additionally, the professor was removed from the space during the time I conducted the session, and for optimal kairos, students were not told ahead of time about the experiment.</p>
+<p>	The architectural translation was the most mystifying part — despite the internet being based off our own social networks, there is no true 1:1 mirror by which to understand where social platforms had been translated from. Although Edwards describes the architecture of the internet as “a form of tactical rhetorics […] tactical characteristics of navigation, adaptation, and forging” and likens it to an “animate[d] digital archive,” even Edwards finds himself unable to fully articulate a complete, uncomplex blueprint. Of course, I could have once more relied on technology itself — everyone has access to a laptop or phone — but at the same time that I dreamed of how to translate the social media apparatuses into the real world, so did the rhetorical goals. As Edwards illuminated, one cannot exist without the other, because “a rhetorical framework attuned to a broader understanding of circulation would not only pay attention to how one might create an object worthy of circulatory success, but also how one might effectively intervene in the flow of moving materials” (Edwards).</p>
+<p>	Although I believed I had created this framework through the labeling of students using physical pieces of paper — Purple: top tier contributors, setting the tone for the entire class discussion, they are “verified,” Blue: regular contributors, occasionally noticed and influence others, and White: passive if no contribution, does not influence the discussion in any way — my circulation did not account for the intimacy of the physical space. In performing the experiment, when I looked at the date, I realized that it was coming right after our Fall Break would be ending, and inevitably, there would be students who may not show up because they wanted to extend their break. As I saw who had shown up, a majority of students actually had returned to class, and I truly did not think it would be an issue, nor would it radically change the experiment. One person — who I had marked down as being someone who participated frequently in class and therefore was designated as a “purple” piece of paper — did not show up, and neither did one or two others who I had designated as white pieces of paper. While I initially did not think this would have much bearing on the experiment, when the physical reaction to the materials was more muted than expected (even with a participant who was an instructed mole), my single purple student who did not show up left a wide gap in the rhetorical circulation from which I, nor the materials, could recover. I knew this because upon showing her when she came to the next class and explaining what had happened last class, she burst out laughing so much and caused the other members of class (and myself) to laugh so hard that we began to shed tears.</p>
+<p>	So, what exactly caused my kairos and chora to crumble? Perhaps looking to actual philosophical architects might be helpful. In Edward S. Casey’s “Looking around the Edge of the World: Contending with the Continuist Principle and the Plenarist Passion,” from <em>Chora 5,</em> he observes and recontextualizes the way we understand borders, especially natural ones such as horizons as edges, and edges which are “something that we don’t usually pause to consider [and] are found everywhere” as a “virtual tyranny in our ongoing lives,” yet “the life-world is an edgy place, multiply so and often to our frustration, although sometimes to our delight (as when an architect modulates edges to suit our fancy)” (152-53). While Casey is not suggesting our natural tyranny, the world virtual and modulates are of note there to me. Even in places we are habituated to, such as the classroom, the single presence of a new edge — or boundary — can inject an inability to navigate. All at once, kairos is shrunken, or redirected to a different time, and chora collapses into cosmos, with only rigidity left. The internet and the real world, while dependent on each other, do not exist in the same time and space, and therefore, online rhetorical circulation evades intimacy when put into physical bearings as the mass to which online circulation continues to expand is completely and utterly unshrinkable. Even in the real world, modulation requires a smoothing of edges, suited to the mover in the situation, and so, because I could not modulate the edges of the content I delivered to the classroom, the edges inside it only became more vast, and their circulatory properties limited.</p>
+      <img class="shifting-image image-right" src="4.jpg" alt="Section 1 Image Below">
+    </div>
+
+    <div class="section">
+      <h2 class="header">vision/movement</h2>
+      <img class="shifting-image image-left" src="5.jpg" alt="Section 2 Image Above">
+      <p class="shifting-text"><blockquote>“In a culture like ours, long accustomed to splitting and dividing all things as a means of control, it is sometimes a bit of a shock to be reminded that, in operational and practical fact, the medium is the message. […] The electric light is pure information. It is a medium without a message, as it were, unless it is used to spell out some verbal ad or name. This fact, characteristic of all media, means that the “content” of any medium is always another medium. The content of writing is speech, just as the written word is the content of print, and print is the content of the telegraph.”
+<p>—Marshall McLuhan, <em>Understanding Media: The Extensions of Man</em>, pg. 14-15, 1964</blockquote>
+<p> </p>
+<p>	What came before the picture? Better yet, what came before the painting, or even, before vision itself? There lives within the art community a story as old as vision itself, preoccupied with this very concept. As the story of the “invisible horse” goes:</p>
+<p>A 19th century museum curator and gentleman archaeologist by the name of Saloman</p>
+<blockquote>Reinach was once entertaining a Turkish military officer when, as a token of goodwill, he presented him a beautiful piece of artwork, a fine drawing depicting a horse. To Reinach’s astonishment, the soldier became confused. He moved around the drawing, looked under and over it, but he was unable to make sense of it. He could not see the image on the paper no matter how hard he tried to make it out. To the Turkish man, it was just lines and shapes — no horse. In fact, all of the other representative art in the museum was nonsense to him as well. If it depicted the “real world,” he simply couldn’t see it. […] As a 19th Century Muslim, the Turkish soldier had lived his whole life in a culture that, for religious reasons, forbade representative artwork. This being his first trip to the West, it was also his first exposure to Western art. He had never seen a two-dimensional horse before, and so he couldn’t. He could see it was something, but his mind just couldn’t assemble it into a horse. The image, Breuil wrote, had no meaning because the soldier could not intuitively work out how it might appear in three dimensions. He had only ever seen two-dimensional images made up of geometric patterns, calligraphy, and repeating shapes.
+<br>(McRaney)</blockquote>
+<p>The story of the invisible horse is a story that asks if depiction of experience is even possible or simply an illusion conjured on a mass scale. “Recorded history” as a phrase is meant to evoke images of long-robed scribes sitting in Byzantine palaces, scribbling furiously with reeds dipped in ash or paste on long papyrus scrolls while a king slowly paces back and forth in front of them, dictating their orders. The phrase itself functions on two levels: both as establishing the definitions of “recorded” and “history” and what they mean combined, while also obscuring other meanings by painting an image in the audience’s head. For many, recorded history may not span back to artistic endeavors, like those of the Lascaux caves in Southwestern France, only meaning <em>written</em> history. Yet language and art join themselves in the fact that we look at them, they <em>are</em> our vision. Not only are they are vision, but they are our movement, for how can we move if not for developing some kind of vision? Even those whose literal vision is impaired are not completely without their own direction or ways of seeing, and so, vision and representation find themselves intruding into every aspect of our lives. It is impossible to answer what came before vision because, like time and space, our vision springs into being at the same moment we do, guiding us continually.</p>
+<p>	The world of vision was forever altered when the cave painters made their claim, again as art was institutionalized through the salons and other official structures of critique, then once more with the advent of the printing press and mass literacy. Yet no such advancement in vision has quite lived up to the invention of photography and the moving picture in 1826 (Rosenblum, et al). The inescapable innovations of the early nineteenth century now defines our visual field — if we are not on our phones looking at social media, we are inevitably looking at a computer screen, TV, billboard, the screens in our cars, digital watches, or the various other ways we have found to force visual media in front of our eyes, and unlike spectators of the nineteenth century, the marriage of words to the images we see is constant and continuous. As W.J.T Mitchell puts it in <em>Picture Theory</em>, “the basic construction of the human subject [becomes] constituted by both language and imaging” (24). And so social media apprehends us here, both constituting our vision and the ability to move through that vision with language. At the same time, social media’s grasp is so tight and continuously de-and-reconstructing that it utterly obscures our vision outside of its own confines. Of course, this vision is consistently moving, which gives us the illusion that somehow progress is taking place, yet judging advancement from the blurred images emitting out of the gaps in the fingers of the hand we are trapped in does not true development make. There is no longer constitution outside of social, or really any, media, for the human subject, even those who do not participate it in. Again, I bring us back to the invisible horse — even if the soldier cannot comprehend that the horse is represented in the painting, even if the soldier could not make sense of a painting <em>of himself</em>, does that mean that the painting no longer exists? The better question, for our purposes, would be, does that mean the painting no longer has meaning for those who <em>can</em> understand its representations?</p>
+<p>	Of course not. The archaeologists and artists continue with their work, repeatedly beaming through representations on the life of the solider that, as others entertain and use them to transform the world around them, so impact him despite his inability to see. This is, in so many ways, the case on social media today, and perhaps one of the most insidiousness reasons as to why it has transformed our world. Two frames of mind appear to me when considering vision and movement on the experiment: one was that, the visuals would be relatively easy as they would be based on visuals they were already familiar with from the digital and print worlds, but also, I could not decide whether forcing them through the visuals would be unlike or like behavior online. As discourse and visuals have their affect simultaneously online, and often, pull the reader into events they otherwise may not have been interested in, in many ways, my experiment would then be mimicking perfectly the way people are arrested by conversation online, and the way visual stimuli is presented by media developers for maximum psychological addictiveness. On the other hand, most if not all users online are able to tailor their content to their specific preferences, such as Tiktok’s famous “For You” page that is the default a user gets when opening the app, though in many ways, choosing a specific class substitutes for this behavior.</p>
+<p>	The primary discipline on vision I provided was not the actual presentation itself, but the pieces of paper. The pieces of paper were meant to serve as both ways to subtly influence how students may react to eachother and themselves based on their color, while also standing-in for the “thread” mechanism that makes up the vast majority of how users interact with one another on social media. The papers became the only way that students had autonomy in the classroom, and even then, I controlled this aspect by taking papers from them, only passing out selected ones as time went on, and selecting specific ones to read aloud. Later, during our class discussion after I had revealed my duplicity and asked for feedback, the students relayed to me several things about the papers effect on them: First, the actual discourse on the papers mattered very little — as most students did not have any prior context, they struggled to feel like their responses were adequate, and ranged from all-out abstract to very short and matter-of-fact sentences. However, because it seemed like the discourse of others mattered so little, when referencing it, one student began his chain of thought by saying, “I don’t remember who said it, but,” using identical language to circulatory discourse online. Second, some students did notice the colors on the paper and wondered why, or thought they themselves had somehow gotten “lucky” by not being given a white piece of paper, while others truly thought it was randomized. Third, the piece of papers had an emotional impact on them. Students who did not get the papers circulated, or have their responses highlighted by myself, felt agitated or neglected. As one student put it, “Even though I had nothing to say, I still wanted to know I had the piece of paper to write something down on.” The point of strictly controlling circulation was to see if the sort of addictive spirit that social media companies strive for could be replicated, even if the flashy and immersive UX design and algorithms were not substituted with just a PowerPoint presentation, a piece of paper, and a pencil. The conclusion was a resounding yes. Yet unlike online, the effect also worked its way on me. Seeing the faces of the people who I had left out, and reading onto their faces feelings of sadness or discomfort, I broke my own algorithm to continue privileging their responses even when they did not engage in the behaviors that should have continued circulating them. In short, my own vision and movement of the project was short-circuited by others vision and movement, and thus, as I had constituted them, they were able to constitute me back.</p>
+<p>	In many ways this event aligns with expectations of what the internet provides — someone posts content, people respond using the available tools, and the conversation continues, impacting the real lives of the people both involved and bystanders. And so, too, does my bias in changing the algorithm when it no longer suited me fit historic norms. Algorithms in the real world are made with consistent bias — long is the racial bias present in past and current algorithms both in the digital age and before it. The way we view algorithms, or rather “robots,” themselves both contributes to and entrenches biases, especially racial, further, Ruha Benjamin elaborates:</p>
+<blockquote>social bias embedded in technical artifacts, the allure of objectivity without public accountability. Race as a form of technology – the sorting, establishment and enforcement of racial hierarchies with real consequences – is embodied in robots, which are often presented as simultaneously akin to humans but different and at times superior in terms of efficiency and regulation of bias
+<br>(56)</blockquote>
+<p>Race itself is a concept based on both vision and movement, establishing itself as fact through the color of skin, while also confining or expanding the literal and figurative movements in society of those with darker and lighter skin tones. The physical properties of race, while real, also make the symbolic properties assigned to race — moral judgements, hierarchy, class, etc. — seem just as tangible as we view them simultaneously, despite their lack of foundation in any way other than forced through historic oppression. Our vision and ability to move through it is impossible to parse for AI replication, no matter how sophisticated it becomes, and yet continues to present as a mirror copy of ourselves due to our injection of our own biases. Algorithm, if we view it as an extension of our media landscape in programming what appears before our eyes and the given triangulations, then makes more sense how it so pervades the way we talk about the internet, yet seems almost entirely invisible to us. Algorithm is our invisible horse, present yet undecipherable in our field of vision, and therefore, useless as a tool in navigation. This fact makes the internet both highly navigable yet seemingly an ever-rushing flood, as Mitchell extrapolates McLuhan’s “medium is the message” to our digital age:</p>
+<blockquote>On the one hand, it seems overwhelmingly obvious that the era of video and cybernetic technology, the age of electronic reproduction, has developed new forms of visual simulation and illusionism with unprecedented powers. On the other hand, the fear of the image, the anxiety that the ‘power of images’ may finally destroy their creators and manipulators, is as old as image-making itself. […] What is specific to our moment is exactly this paradox[, as a] rediscovery of the picture as a complex interplay between visuality, apparatus, institutions, discourse, bodies, and figurality. It is the realization that <em>spectatorship</em> (the look, the gaze, the glance, the practices of observation, surveillance, and visual pleasure) may be as deep a problem as various forms of <em>reading</em> (decipherment, decoding, interpretation, etc.).
+<br>(15-16)  </blockquote>
+<p>Mitchell’s warning here is quite possible a dire one: our vision is so changing our ability to read, and vice versa, that it is completely and utterly destroying the very social fabric that has enabled it, and still, we cannot turn away from it no matter how hard we try. Mitchell’s interplay of spectatorship and reading here conflates the degradation of one to an inability to continue doing the other, all based in vision. While there is plenty of evidence to support Mitchell’s claims, even his vision now suffers from narrowness. Mitchell’s main event he is prescribing these phenomena are through the American-Middle Eastern armed conflicts in the early 90’s and their spectacle broadcast on CNN, and he could not be faulted for making such claims given the generally agreed upon sensationalized media environment in the last decade of the twentieth century (15-16). However, Mitchell’s limit comes in totalizing the movement of the audience within event from visual space as a fixed point. While in the 90’s, audience participation was limited with the media, today’s media participation is the most dynamic and fluid aspects of why our society’s relationship to vision has so rapidly shifted. Even early digitalia and analog cannot fully parse the dynamics of our current landscape today. As Johanna Drucker illuminates a different way to view the tensions and paradoxes we face through the thinking of “interfaces”:</p>
+<blockquote>Nonetheless, our cognitive ability to make correlations is staggering. We make sense of one piece of information or experience in relation to another, stitching fragments of what are graphically related elements together into a narrative, or making our way through unrelated fragments until some chain of compelling connections captures our attention. […] Interface in a dynamic space, a zone in which reading takes place. We do not look rather through it (in spite of the overwhelming force of the ‘windows’ metaphor) or past it. […] Interface is what we read and how we read combined through engagement. Interface is a provocation to cognitive experience.
+<br>(4, 9)</blockquote>
+<p>Drucker’s use of the word “provocation” is of note in conceptualizing how my experiment understood the medium and message and translated it into the classroom. While the conditions of what was given as materials were simple, they were grasped at the moment they were viewed as part of narrative, and therefore dynamic in their nature.</p>
+      <img class="shifting-image image-left" src="6.jpg" alt="Section 2 Image Below">
+    </div>
+
+    <div class="section">
+      <h2 class="header">tone/sense</h2>
+      <img class="shifting-image image-right" src="7.jpg" alt="Section 3 Image Above">
+      <p class="shifting-text"><blockquote>“Comedy is the way I handle the world. So in the darkest moments of my life, I still find myself compelled to try and make jokes either to take the weight off some of what’s happening or sometimes to feel what’s happening a bit more. I find people employing comedy at moments of tragedy incredibly meaningful. I know some might find it glib or offensive. To me, it is the absolute opposite of that when done well.”</p>
+<br>—John Oliver, “John Oliver Is Still Working Through the Rage”</blockquote>
+<p> </p>
+<p>	The culmination of the other four embodiments I have discussed here inevitably leads to tone and sense. Sense, as a broad distinction, captivates both our literal ability to touch and feel things as well as how we make “sense” of —or intellectually parse — those bodily feelings into emotions that guide us. The use of the word “sense” to activate this sort of bodily and metaphorical experience has a long history — “common sense,” “sense of humor,” “make sense,” “a sixth sense,” etc. All these terms place themselves as distinct yet use the same wording to implicate both different and similar meanings. For example, if someone were saying something that didn’t logically follow, you would not tell them they had a “sixth sense” as that would mean they knew something intuitively that others did not — or, as this phenomenon is known on the internet, humor.</p>
+<p>	I hope you laughed at that last line, as it was meant to take you back. Humor’s presence online is ubiquitous, and therefore, an essential part of the experiment. Humor online functions as a de-facto language, as it translates and mediates every subject; it is the primary mode of engagement in some way no matter what corner of the internet you browse, though it has increased significance to those who are “chronically online” — a popular term to deem someone whose thought process has been changed (typically, in a negative way) by how much time they spend on social media. Through humor, nearly every other topic or medium has its moment — news, political ideology, economics, entertainment, and the private and public lives of individuals. So in order to replicate this, I took traditional, printed poetry, that is, <a href="https://www.poetryfoundation.org/poems/49305/america-56d22b41f119f">Allen Ginsberg’s “America” poem</a>, and swapped it’s medium (and hopefully message) to be in the form of tweets, while taking a pure Tiktok video by <a href="https://www.tiktok.com/@whomamagonecheckme2/video/7385208420921511211?_r=1&amp;_t=8qPrF1wGShK">@whomamagonecheckme2</a> and turning it into a poem, “Let Hunter Biden Smoke Crack.” Additionally, part of the replication was my deceit in presenting each as real — lying about the tweets and poem being genuine initially just served to be part of fully immersing the students in the tonal and medium changes to see their reactions, but the fact that misinformation and distortion runs wild on the internet was not an unintended comparison either. Two of the students I interviewed afterwards told me that in their other classes, they were studying the effects of finding and articulating legitimate sources, and to see the ruse pulled off in real time on themselves made the concept they were studying real to them.</p>
+<p>	As I stated before, this portion of the experiment — specifically, how the humor landed in class — had mixed results. The actual response to the fake tweets themselves was some light laughter, though nothing bombastic or as full-throated as the student I labeled purple who had been missing that day gave me when I showed her after the fact. Additionally, there was almost no way I could fully conceal the humor the Tiktok video when translating it into poem form, even when choosing what I deemed were the most serious sentence structures, even when reading it in my most serious voice. The same was true for the Allen Ginsberg poetry, though to a lesser extent considering that Ginsberg seems to have purposefully put in humorous or satirical phrases for the audience to laugh at. Humor permeated the discourse and medium, in what may be described as producing an “uncanny valley” affect to the Frankensteined works. As disorientation was part of the experiment in ushering the professor out of the room and not having the students prepared for me to take over, the further uneven tone in the tweets and poem produced further undulations in among the actual sense of the room. Despite everyone I interviewed afterwards saying they found the tweets funny, the humor itself was not an even sense for any one student. Even the things that I did not find as the funniest parts of the tweets — Ginsberg’s “It’s true I don’t want to join the Army or turn lathes in precision parts” — were what the student who most enjoyed the tweets laughed the hardest at, for as she put it, it was absurd, and yet altogether contextualized by what she’d engaged with online (Ginsberg 86). On the other hand, one student wrote in her response during the experiment that she did not understand why the tweets would have gone viral, or in other words, why they were funny. Why and when does humor work, then? How do we actually, literally, get a sense of humor?  </p>
+<p>	As Marie-Helene Bertino puts it, “Humor can make a reader relax. This disorientation is valuable. Once they feel at home, the reader is vulnerable. Whatever the writer does next lands harder. The reader might find the cozy room they’re sitting in is actually a lightning field” (Bertino). Bertino’s analysis of humor’s place among our senses is valuable, for it captures our attention while also navigating us away from whatever came before. Her wording — relaxation, disorientation, at home, vulnerability, lightning — signal at every embodiment we possess. Humor is both a place and a state of being, a way to view the world and to navigate it; it presents every option yet makes focusing easier. In being what I might deem an “ultimate sense,” it’s intersections with the other senses and tones I will address here — common sense and seriousness — humor is always lurking around some corridor, in the shadows, waiting to reveal itself and take ahold of the conversation once more. Humor is never truly out of the game, and so it’s a power that is always in kairos, ready to exert itself whenever we engage it.</p>
+<p>	Humor, in that way, is a sense, a tone, but essentially, a creative act. Humor is transformative both when it is created and when its effect is made upon the audience, yet it is unlike any other creative act we engage in. Indeed, even when taking the Tiktok and putting it into what might be seen as a “traditional” creative writing genre — poetry — humor still weaved its way through the crevices, offer little glimpses of light in an otherwise more “serious” tone. Seriousness is the tonal binary to humor, a state in which intellectual focus is put alongside remaining measured in emotion. While seriousness and humor are both spaces that creatives can operate in, there is a specific link between creativity and humor online. Creativity, as invention, as both constituted the most interesting parts of the internet from the beginning, as well as continued its relevancy in our real lives throughout. Invention and innovation require some level of creativity, and creating humor — that is, taking all those elements of our lives and making something that others laugh at — is an act requiring creativity. Humor and creativity’s special relationship is well documented in the cognitive sciences, as such in a paper evaluating the links entitled “<em>Why Humor Enhances Creativity From Theoretical Explanations To An Empirical Humor Training Program</em>:” “Creativity and humor are not two separate mental processes. Instead, humor usage is an indicator to evaluate the potential of creativity; the better the humor comprehension, the higher the creativity” (Chen, et al 90). Creativity and humor bring embodiment into materiality online, and because of its expansiveness, one might need it as “highly probabilistic” turning it into a continued event every time one goes online, one we are accustomed to but yet continues to surprise and elate us. As Johanna Drucker explains, “Probabilistic materiality conceives of a text as an event, rather than an entity. The event is the entire system of reader, aesthetic object and interpretation – but in that set of relations, the ‘text’ is constituted anew each time” (8). Our realities within humor are inventive, known to us clearly yet continuing to push us. Humor, as an instantaneous process with creativity, is also a fundamental driver of identity development:</p>
+<blockquote>How you define humor depends on your construction of the term. You can feel humor by how it presents itself, by what it brings to you, by how it changes you; humor pops up in a comedy, humor rushes to you with an inexplicable feeling, humor makes you laugh out loud, and humor can make your day. Humor contains humor development, the feeling of funniness, humor recognition, humor appreciation, and the ability to use it.
+<br>(Chen, et al 87)</blockquote>
+<p>Humor, when done right, always takes us on a new adventure, opening further passageways. This same experience cannot be applied to seriousness. While seriousness is probabilistic in every aspect of our lives, it does not ask of our bodies the same things humor does, and therefore, the embodied experience cannot be translated online materially in the same way humor does. Whereas humor prompts us to smile, giggle, roar with laughter, or even wiggle our bodies, seriousness asks that we remain still, intent, perhaps even somber in our emotions as we let the weight of subjects hit us. Where humor seeks to move us, seriousness asks us to stop movement altogether. It may be no surprise then that one of the most popular phrases online is “conservatives are not funny.”</p>
+<p>	Conservativism, as a political ideology, is important to bring up in contrast to humor because, often online, conservative critics of liberal or left-wing ideology will lay claim to the fact that conservative policies are simply just “common sense” values that anyone would agree with. Although they may not be able to circulate their “humor” — what seems to be often jokes attacking minority groups, such as the “I identify as an attack helicopter” meme, a meme started to make fun of poor and repetitive conservative comedy — in the same way that progressives can, the right has, in many ways, mastered projecting a tone of seriousness (Shalloe). Take, for example, during the 2024 Presidential Debate between Vice President Kamala Harris and former President Donald Trump. During this debate, Trump made the outlandish claim that Haitian immigrants in Springfield, Ohio were “eating the cats and dogs of the people that live there” (Thomas, et al). Harris immediately started laughing in Trump’s face during this claim during the debate, mouthing “Oh come on!” (Thomas, et al). While the left wing immediately went online to make memes and jokes about this and other laughably pathetic statements that Trump made — such as stating he had “concepts of a plan” when asked about how he would reform the US healthcare system — (Bolies) the right took these statements as serious fact, or in the case of the “concepts” comment, a purely rational statement, despite any evidence to the contrary (Thomas, et al). How could it be possible, then, for an ideology that puts up absurdist statements and continually rejects fact or conventional wisdom, to be associated with seriousness, or worse, a “common sense?” Caddie Alford, in examining the Pizzagate shooter of 2016, Edgar Welch, illuminates this connection:</p>
+<blockquote>When Welch went inside Comet, it seemed as though he was investigating a child sex ring, but in his own words, he was actually self-investigating.’ The hyphen is important: the process of investigative discovery is just as much a pursuit of meaning as it is a pursuit of what already means something. ‘Self’ is a bit misleading, though. Welch had just gotten internet access, which allowed him to really be able to look into it.’ Tripping down the rabbit hole left him with the “impression something nefarious was happening.” That is, these days “self-­ investigation” is always a net-worked investigation—the sense of discovery always a networked sense of discovery, inaugurating evidence by reverberating through a number of bodies and their doxastic outputs. Welch was one of many who made Pizzagate what it was. New York Times staff writer Jonathan Mahler points out that when self-investigators create meaning with social media, they have ‘only themselves and their appetites as a guide,’ implying that networked discovery is mobilized by bodies hungry to make sense, through sense. […] What can be understood, then, is the structure and image of stabilized unity that commonsense represents, which is why Welch’s actions don’t make commonsense. […] Sense wires as it gets re-wired: sense ‘is something to produce by a new machinery.'
+<br>(76-78)</blockquote>
+<p>Our sense of self, or identity, is continually reimagining itself in relation to our other senses, and therefore, so is what we articulate. Welch’s sense, while not common sense, began to feel that way to him and helped spur him into action to do what he thought was necessary to save others. These articulations — or “doxa” as they may be called by Caddie Alford — have a profound affect on our identities. As she continues to elucidate for us, the embodiment we feel as we confront sense and transmute it into common sense, even if despite this, it really becomes more of a false “sixth sense:”</p>
+<blockquote>Doxa literally and figuratively flesh out an ‘orientedness’ that structures bodies both in motion and in argumentation. […] Doxa demand a physicality that moves bodies toward suasiveness, making rhetoricity out of the daily functioning of heart beats and metabolic processes. In other words, doxa provide bodies a physical access line to rhetoric. […] Emotions, as an intensity, swell and calm from doxa’s input. Bodily responses as reactions assume shape in the same ways that fundamental rhetorical strategies do. […] Doxa, emotions, and sense/sensation are equal parts flighty and obdurate and are still at the helm of invention. Noticing this initiates a reckoning of sorts.
+<br>(80-81)</blockquote>
+<p>	It seems “common sense” has the same kaironic qualities as humor but it’s understanding in our bodies does not produce the same effect. Common sense, as a sense, provides a “home” to settle our intellectual identifications and the opinions we form from (or without) this, yet it is not meant to disorient or make vulnerable — quite the opposite. Common sense is an equalizing force, taking any particular vulnerability that may ask to reveal itself and shuffling it away as part of individual experience. Common sense is a force meant to totalize experience across the board into an intellectual matter to which people who are part of regular, or mainstream, social networks conduct knowledge osmosis. It is supposed knowledge that requires little or no actual work to obtain, because it is a bodily sense felt when simply moving through the world. It is common, and its procedure of gripping someone through the senses is so subtle that the sense it produces is one that refuses to be questioned logically, even when directed with new evidence.</p>
+<p>	It is important to understand the political ideologies associated with certain feelings because my project was politically informed. The Tiktok I chose, elaborating on the fruitless distraction that was the Hunter Biden scandal, was specifically because it had completely changed the way I viewed the issue before I had watched it. In some ways, the sort of “common sense” that seems to flow in right wing circles had permeated broader culture (as does happen from both sides of the political spectrum) to induce a slight anxiety about the issue and what it could mean for broader support of progressive policies, consider it would inevitably reflect poorly on President Biden. In watching whomamagonecheckme2’s video, not only did it dissolve any of my worries about the issue, but it replaced the common sense I thought I had previously had about the issue with a completely new one. The senses, while so all-gripping, all-encompassing — even when we deny they aren’t, we indulge in the sense of <em>resistance</em> — also are able to wash us clean for that same reason. Senses come in waves, and life waves, roll over us into and out of experience. We move with sense, and sense moves with us, and in truth, we move each other.</p>
+      <img class="shifting-image image-left" src="8.jpg" alt="Section 3 Image Below">
+    </div>
+
+    <div class="section">
+      <h2 class="header">Conclusion</h2>
+      <img class="shifting-image image-right" src="9.jpg" alt="Conclusion Image Above">
+      <p class="shifting-text"><blockquote>“Truth, beauty and goodness are not mysterious, they are the commonest, most obvious, most essential facts of life, like sunlight, air and bread. Only folk whose heads are muddled by expensive educations think truth, beauty, goodness are rare private properties. Nature is more liberal. The universe keeps nothing essential from us — it is all present, all gift.” / “It is only the way it is until we discover the new way it is, and then that is the way it is until we discover the new way it is, and so it goes until the world is no longer flat, electricity lights the night, and shoes are no longer tied with ribbons.”</p>
+<br>—Godwin Baxter, <em>Poor Things</em>, pg. 93, Alasdair Gray (1992) / Bella Baxter, <em>Poor Things</em>, dir. Yorgos Lanthimos (2023)</blockquote>
+<p>	What possible conclusion could you expect at this point? This is the same question I found myself asking after the experiment, and even after I had the interviews. There was no firm conclusion, no complete or full picture I could draw on for what had happened and why, only snippets of details that I could ruminate on and continue to move through. Yet, the more I moved in the class, the more we continued with the class and the experiment was unspoken, having been washed away by others, I remained continuously changed. As I stated in one of my responses after the experiment,</p>
+<blockquote>I did not think that the experiment would mean how I felt in the class is altered, but I do feel that way. There is no digital duality — I was not able to leave “experiment Shannon” behind and reclaim my spot as “student Shannon.” The experiment fundamentally altered my proximity to my classmates; I could no longer remain “neutral” within the space of the classroom because I had transformed myself. […] it also meant that I could never go back to the moment in time before I was a student. I would always be in that in-between space (the space in which my role among my other students, as an equal, is the life in which I had “died” from), in which I was both a student and the authority,</blockquote>
+<p>	While I was relating this to Legacy Russell’s interpretations of ghosts in glitching, I feel the more apt label would be that I had Creature-fied myself. I had put myself in the space of Bella Baxter, and for this, I was both dead and alive, never to come back from or to either fully again. The only way to change this experience? For the world to end.</p>
+<p>	Okay, not literally — what I mean is that the experience of being in between only ends when the class ends, though there is no “end” in social media. Social media’s collapse is not, at least in the near future, imminent, and though the age of information is upon us, so is the age of misinformation. Yet, we cannot remain here forever. In the same way that senses grip us up in momentary passions, they also release us too, and the sense we have about our information shifts once again. Perhaps the greatest gift that the age of social media has bestowed upon us has been the ability to see ever more clearly that change is always possible, at all stages. Never has any object or experience before in human life been so clear about the fact that we are passing or moving through something new, evaluating it, and then taking it with us and opening it up when needed. Never have we been able to feel the full breadth of our collective senses and evaluate their passion but also their intellectual, wonder, anger, and everything in between. Maybe fear and anxiety are ways to proceed, and things that are natural to feel, but to let those totalize our experience would be a waste of what more can be understood and learned. Like the page I am presenting this to you on, there is no clear guide, no complete answer to the problems we face. We are faced with a world that continues to spin, rotate, go out of grasp, and yet, we continue trying to make sense, piecing what we can together so that meaning is found somewhere. In truth, though, there is only the text, and what more you can make from the text. There is only the event, and what more you can make from the new event. There is only your body, and what you can make from your body. I hope we can all keep making something better.</p>
+      <img class="shifting-image image-right" src="10.jpg" alt="Conclusion Image Below">
+    </div>
+  </div>
+
+  <div class="works-cited">
+    <h2>Works Cited</h2>
+    <ul>
+      <p>Alford, Caddie. <em>Entitled Opinions: Doxa After Digitality</em>. The University of Alabama Press, 2024.</p>
+<p>Benjamin, Ruha. <em>Race After Technology: Abolitionist Tools for the New Jim Code</em>. Polity, 2020.</p>
+<p>Bertino, Marie-Helene. “Marie-Helene Bertino on Using Humor to Connect With Readers.” <em>Literary </em><em>Hub</em>, 8 July 2021, lithub.com/marie-helene-bertino-on-using-humor-to-connect-with-readers/.</p>
+<p>Bolies, Corbin. “Trump Still Only Has ‘Concepts of a Plan’ For Health Care.” <em>The Daily Beast</em>, The Daily Beast Company, 8 Dec. 2024, www.thedailybeast.com/trump-still-only-has-concepts-of-a-plan-for-health-care/.</p>
+<p>Casey, Edward S. "Looking around the Edge of the World: Contending with the Continuist Principle and the Plenarist Passion". <em>Chora 5: Intervals in the Philosophy of Architecture</em>, edited by Alberto Pérez-Gomez and Stephen Parcell, Montreal: McGill-Queen's University Press, 2007, pp. 151-178. <a href="https://doi.org/10.1515/9780773560383-007">https://doi.org/10.1515/9780773560383-007</a></p>
+<p>Chen, Ching-Hui, et al. “Why Humor Enhances Creativity From Theoretical Explanations To An Empirical Humor Training Program.” <em>Creativity and Humor</em>, 2019, pp. 83–108, https://doi.org/10.1016/b978-0-12-813802-1.00004-1.</p>
+<p>Drucker, Johanna. “Entity to Event: From Literal, Mechanistic Materiality to Probabilistic Materiality.” <em>Parallax</em>, vol. 15, no. 4, 21 Oct. 2009, pp. 7–17, https://doi.org/10.1080/13534640903208834.</p>
+<p>Drucker, Johanna. “Humanities Approaches to Interface Theory.” <em>Culture Machine</em> 12, (2011). https://culturemachine.net/wp-content/uploads/2019/01/3-Humanities-434-885-1-PB.pdf</p>
+<p>Edwards, Dustin. “On Circulatory Encounters: The Case for Tactical Rhetorics.” <em>Enculturation</em>, 4 Oct. 2017, www.enculturation.net/circulatory_encounters.</p>
+<p>Garcia-Navarro, Lulu, and John Oliver. “John Oliver Is Still Working Through the Rage.” New York Times, 24 Sept. 2024, https://www.nytimes.com/2024/09/28/magazine/john-oliver-interview.html.</p>
+<p>Ginsberg, Allen. “America.” <em>Poetry Foundation</em>, Poetry Foundation, 17 Jan. 1956, www.poetryfoundation.org/poems/49305/america-56d22b41f119f.</p>
+<p>Gray, Alasdair. <em>Poor Things: Episodes From the Early Life of Archibald McCandless M.D. Scottish Public </em><em>Health Officer</em>. Bloomsbury, 1992.</p>
+<p>Jones, Rolin, et al. “Interview With the Vampire.” Season 2, episode 7, episode 8, AMC, 23-30 June 2024.</p>
+<p>McLuhan, Marshall, and W. Terrence Gordon. <em>Understanding Media: The Extensions of Man</em>. Gingko Press, 2013.</p>
+<p>McNamara, Tony. <em>Poor Things</em>. Searchlight Pictures, 2023, https://deadline.com/wp-content/uploads/2024/01/Poor-Things-Read-The-Screenplay.pdf.</p>
+<p>McRaney, David. “Invisible Horses.” Medium, Medium, 30 Nov. 2017, medium.com/@davidmcraney/invisible-horses-19c1be3226ff.</p>
+<p>Mitchell, W. J. T. <em>Picture Theory: Essays on Verbal and Visual Representation.</em> Univ. of Chicago Press, 1994.</p>
+<p>Natalio, Carlos. “Cinema, biopolitics and ‘cinematic operative model.’” <em>Online Journal of Philosophy</em>, vol. 1, no. 2421–3098, May 2015, pp. 107–120.</p>
+<p>Rice, Anne. <em>Interview With the Vampire</em>. Ballantine Books, 1976/2014.</p>
+<p>Rosenblum, Naomi, Newhall, Beaumont, Gernsheim, Helmut Erich Robert and Grundberg, Andy. "history of photography". Encyclopedia Britannica, 18 Nov. 2024, https://www.britannica.com/technology/photography.</p>
+<p>Russell, Legacy. <em>Glitch Feminism: A Manifesto</em>. Verso, 2020.</p>
+<p>Sallis, John. <em>Chorology: On Beginning in Plato’s Timaeus</em>. Indiana University Press, 2020.</p>
+<p>Shalloe, Harper. “‘I sexually identify as an attack helicopter.’” <em>TSQ: Transgender Studies Quarterly</em>, vol. 6, no. 4, 1 Nov. 2019, pp. 667–675, https://doi.org/10.1215/23289252-7771824.</p>
+<p>Shelley, Mary Wollstonecraft, and John Coulthart. <em>Frankenstein</em>. Edited by John William Polidori and George Gordon Byron Byron, Union Square &amp; Co, 2018.</p>
+<p>Thomas, Merlyn, and Mike Wendling. “Donald Trump Repeats Baseless Claim about Haitian Immigrants Eating Cats and Dogs in Springfield, Ohio.” <em>BBC News</em>, BBC, 15 Sept. 2024, www.bbc.com/news/articles/c77l28myezko.</p>
+    </ul>
+  </div>
+
+  <div class="acknowledgements">
+    <h2>Acknowledgements</h2>
+    <ul>
+      <p>To Dr. Elliot Tetrault, who gave me a space to be a fucking freak constantly and unabashedly, I look forward to doing more weird freak shit together in the future.</p>
+<p>To my peers in Digital Rhetoric, who very graciously and patiently helped me with this project, especially Bri, Charlie, Daniel, and Erika.</p>
+<p>To Dr. Douglas Guerra, for giving me the opportunity to be here and so many others, and for forever helping me understand my love for art and literature and putting them together.</p>
+<p>To Dr. Fiona Coll, for helping me see new ways that the digital continues to echo the past, and recontextualizing Frankenstein into all that it is for me today. I hope I keep making you proud.</p>
+<p>To Leigh Wilson and Soma Mei Sheng Frazier, for never letting me forget that I am and will forever be a writer and having a place among them.</p>
+<p>To Dylan Eichholtz, for all the things we do for each other and lift each other up.</p>
+<p>To Jelisa, Tayla, and Will, for being my first friends here in this strange new place.</p>
+<p>To Vice President Kamala Harris, for giving me some momentary hope and showing me how to lead with grace, humor, and endless strength.</p>
+<p>To Aunt Kathy, Aunt Patti, and Uncle Danny, my godmothers and godfather, for their love and support. I literally could not be in Albany without you.</p>
+<p>To Nugget, for being so loving and kind for the past 12 years and keeping me alive to submit this.</p>
+    </ul>
+  </div>
+
+  <script>
+    let idleTimer, idleInterval;
+    const idleTimeout = 180000; // 3 minutes
+    let isIdle = false;
+
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+      const progress = document.querySelector('.progress-bar');
+      const scrollPercentage = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      progress.style.width = scrollPercentage + '%';
+    });
+
+    // Show hidden message on subtitle click
+    document.querySelector('.subtitle').addEventListener('click', () => {
+      document.querySelector('.hidden-message').style.display = 'block';
+    });
+
+    function getRandomPosition(container, element) {
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+      const elementWidth = element.offsetWidth;
+      const elementHeight = element.offsetHeight;
+
+      const randomX = Math.random() * (containerWidth - elementWidth);
+      const randomY = Math.random() * (containerHeight - elementHeight);
+
+      return { x: randomX, y: randomY };
+    }
+
+    function shiftElementRandomly(element) {
+      const container = document.querySelector('.shifting-container');
+      const { x, y } = getRandomPosition(container, element);
+      element.style.transform = `translate(${x}px, ${y}px)`;
+      element.style.fontSize = `${Math.random() * (20 - 12) + 12}px`;
+      element.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+    }
+
+    function startIdleEffects() {
+      isIdle = true;
+      idleInterval = setInterval(() => {
+        document.body.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+
+        const elements = document.querySelectorAll('.header, .shifting-text, .shifting-image, blockquote, p');
+        elements.forEach(shiftElementRandomly);
+      }, 1000);
+    }
+
+    function stopIdleEffects() {
+      isIdle = false;
+      clearInterval(idleInterval);
+      document.body.style.backgroundColor = '#f0f0f0';
+
+      const elements = document.querySelectorAll('.header, .shifting-text, .shifting-image, blockquote, p');
+      elements.forEach((element) => {
+        element.style.transform = 'translate(0, 0)';
+        element.style.fontSize = '';
+        element.style.color = '';
+      });
+    }
+
+    function resetIdleTimer() {
+      clearTimeout(idleTimer);
+      if (isIdle) {
+        alert('You have to keep interacting.');
+        stopIdleEffects();
+      }
+      idleTimer = setTimeout(() => {
+        startIdleEffects();
+      }, idleTimeout);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Include 'p' elements as well
+      const elements = document.querySelectorAll('.header, .shifting-text, .shifting-image, blockquote, p');
+
+      elements.forEach((element) => {
+        element.addEventListener('click', () => {
+          shiftElementRandomly(element); // Allow manual movement on click
+          resetIdleTimer();
+        });
+      });
+
+      resetIdleTimer(); // Start the timer on page load
+    });
+  </script>
+</body>
+</html>
